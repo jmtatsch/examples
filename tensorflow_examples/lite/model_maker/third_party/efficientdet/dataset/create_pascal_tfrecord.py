@@ -175,17 +175,18 @@ def dict_to_tf_example(data,
       area.append((xmax[-1] - xmin[-1]) * (ymax[-1] - ymin[-1]))
       classes_text.append(obj['name'].encode('utf8'))
       classes.append(label_map_dict[obj['name']])
-      if obj['truncated'] == 'Unspecified':
-        truncated.append(0)
-      else:
-        truncated.append(int(obj['truncated']))
+      if 'truncated' in obj.keys():
+        if obj['truncated'] == 'Unspecified':
+          truncated.append(0)
+        else:
+          truncated.append(int(obj['truncated']))
       poses.append(obj['pose'].encode('utf8'))
 
       if ann_json_dict:
-        abs_xmin = int(obj['bndbox']['xmin'])
-        abs_ymin = int(obj['bndbox']['ymin'])
-        abs_xmax = int(obj['bndbox']['xmax'])
-        abs_ymax = int(obj['bndbox']['ymax'])
+        abs_xmin = int(float(obj['bndbox']['xmin']))
+        abs_ymin = int(float(obj['bndbox']['ymin']))
+        abs_xmax = int(float(obj['bndbox']['xmax']))
+        abs_ymax = int(float(obj['bndbox']['ymax']))
         abs_width = abs_xmax - abs_xmin
         abs_height = abs_ymax - abs_ymin
         ann = {
